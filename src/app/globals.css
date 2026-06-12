@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/*
+  SparkBot design tokens.
+  Light, bright, STEM-adventure look: electric blue + bright yellow + orange
+  on a soft white background. All colors route through CSS variables so the
+  high-contrast accessibility mode can override them in one place.
+*/
+:root {
+  --background: #f6f9ff;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --foreground: #1b2a4a;
+  --muted: #5a6b8c;
+
+  --spark-blue: #2d7ff9;
+  --spark-blue-deep: #1857c4;
+  --spark-blue-soft: #e3eeff;
+  --spark-yellow: #ffc800;
+  --spark-yellow-soft: #fff6d6;
+  --spark-orange: #ff8a00;
+  --spark-orange-soft: #ffeedd;
+  --spark-green: #1db954;
+  --spark-green-soft: #ddf6e6;
+  --spark-red: #e6453a;
+  --spark-red-soft: #fde3e1;
+  --spark-purple: #7c5cff;
+  --spark-purple-soft: #ece6ff;
+
+  --border: #d9e3f5;
+  --ring: #2d7ff9;
+
+  --radius-card: 1.25rem;
+}
+
+/* High contrast mode: darker text, stronger borders, no soft tints. */
+[data-contrast="high"] {
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --foreground: #000000;
+  --muted: #1f2937;
+  --spark-blue: #0040c0;
+  --spark-blue-deep: #002a80;
+  --spark-blue-soft: #d6e4ff;
+  --spark-yellow: #b87f00;
+  --spark-yellow-soft: #ffefc2;
+  --spark-orange: #b34700;
+  --spark-orange-soft: #ffe1c2;
+  --spark-green: #006b2d;
+  --spark-green-soft: #c9f0d6;
+  --spark-red: #b00020;
+  --spark-red-soft: #ffd9d9;
+  --spark-purple: #4b2dbb;
+  --spark-purple-soft: #e2d9ff;
+  --border: #000000;
+  --ring: #0040c0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-spark-blue: var(--spark-blue);
+  --color-spark-blue-deep: var(--spark-blue-deep);
+  --color-spark-blue-soft: var(--spark-blue-soft);
+  --color-spark-yellow: var(--spark-yellow);
+  --color-spark-yellow-soft: var(--spark-yellow-soft);
+  --color-spark-orange: var(--spark-orange);
+  --color-spark-orange-soft: var(--spark-orange-soft);
+  --color-spark-green: var(--spark-green);
+  --color-spark-green-soft: var(--spark-green-soft);
+  --color-spark-red: var(--spark-red);
+  --color-spark-red-soft: var(--spark-red-soft);
+  --color-spark-purple: var(--spark-purple);
+  --color-spark-purple-soft: var(--spark-purple-soft);
+  --color-border: var(--border);
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-body), ui-sans-serif, sans-serif;
+  --radius-card: var(--radius-card);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dyslexia-friendly reading mode: Lexend everywhere + extra spacing. */
+[data-font="dyslexic"] body,
+[data-font="dyslexic"] .font-display {
+  font-family: var(--font-dyslexic), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  word-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, sans-serif;
+}
+
+/* Visible focus everywhere, sized for young learners. */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--spark-blue);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.75rem 0;
+  font-weight: 700;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Respect both the OS setting and the in-app reduced-motion toggle. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Gentle idle animations used by the mascot and map. */
+@keyframes spark-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes spark-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes spark-pulse-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes spark-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.animate-spark-float {
+  animation: spark-float 3.2s ease-in-out infinite;
+}
+.animate-spark-blink {
+  transform-origin: center;
+  animation: spark-blink 4.5s ease-in-out infinite;
+}
+.animate-spark-glow {
+  animation: spark-pulse-glow 1.6s ease-in-out infinite;
+}
+.animate-spark-dash {
+  animation: spark-dash 0.9s linear infinite;
+}
